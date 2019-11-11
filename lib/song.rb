@@ -1,3 +1,4 @@
+require "pry"
 class Song
   attr_accessor :name, :artist_name
   @@all = []
@@ -29,6 +30,7 @@ class Song
     song
   end 
   
+
   def self.find_by_name(name)
     self.all.find{|song| song.name == name}
   end 
@@ -41,8 +43,37 @@ class Song
       self.create_by_name(name)
     end
   end 
+
   def self.alphabetical
-    self.all.sort_by {|song| song.name == name} 
+    self.all.sort_by {|song| song.name} 
+  end
  
+  def self.new_from_filename(data)
+    # binding.pry
+    row = data.split(" - ")
+    
+    singer = row[0]
+    song = row[1]
+    
+    new = self.new
+    new.artist_name = singer
+    new.name = song.split(".")[0]
+    new
+  end
+  
+  def self.create_from_filename(data) 
+    row = data.split(" - ")
+    
+    singer = row[0]
+    song = row[1]
+    
+    new = self.create
+    new.artist_name = singer
+    new.name = song.split(".")[0]
+    new
+  end
+  
+  def self.destroy_all 
+    self.all.clear
   end
 end
